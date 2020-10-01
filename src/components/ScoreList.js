@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Link } from "react-router-dom";
+import { HashRouter, Link } from "react-router-dom";
 
 import "./scoreList.css";
 
@@ -24,12 +24,12 @@ export default function ScoreList() {
   };
 
   return (
-    <Router>
+    <HashRouter>
       <div className="matches">
         {matchData.map((match) => {
           const divLink = `/games/${match.match_id}`;
           return (
-            <Link to={divLink}>
+            <Link path="/games/:id">
               <div className="match" key={match.match_id}>
                 <div className="date">{match.match_date}</div>
                 <div className="teamInfo">
