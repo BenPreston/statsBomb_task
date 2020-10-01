@@ -1,0 +1,34 @@
+.App {
+  text-align: center;
+}
+
+.match {
+  margin-top: 15px;
+  border: 1px solid black;
+}
+
+.teamInfo {
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 10px;
+  font-size: 25px;
+}
+
+.teamScore {
+  align-self: center;
+  justify-content: center;
+}
+
+.match_scores {
+  align-self: center;
+}
+
+.date {
+  font-size: 10px;
+  padding: 5px;
+}
+
+.penaltyInfo {
+  font-size: 10px;
+  padding: 5px;
+}
