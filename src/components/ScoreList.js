@@ -1,5 +1,5 @@
 import React from "react";
-import { HashRouter, Link } from "react-router-dom";
+import { Router, Link } from "react-router-dom";
 
 import "./scoreList.css";
 
@@ -24,47 +24,45 @@ export default function ScoreList() {
   };
 
   return (
-    <HashRouter>
-      <div className="matches">
-        {matchData.map((match) => {
-          const divLink = `/games/${match.match_id}`;
-          return (
-            <Link path="/games/:id">
-              <div className="match" key={match.match_id}>
-                <div className="date">{match.match_date}</div>
-                <div className="teamInfo">
-                  <span
-                    className="teamName"
-                    style={{
-                      color: findTeamDetail(
-                        match.match_home_team_id,
-                        "team_first_color"
-                      ),
-                    }}
-                  >
-                    {findTeamDetail(match.match_home_team_id, "team_name")}
-                  </span>
-                  <span className="teamScore">{match.match_home_score}</span>
-                  <span className="teamScore">{match.match_away_score}</span>
+    // <Router>
+    <div className="matches">
+      {matchData.map((match) => {
+        return (
+          <Link to={`/games/${match.match_id}`}>
+            <div className="match" key={match.match_id}>
+              <div className="date">{match.match_date}</div>
+              <div className="teamInfo">
+                <span
+                  className="teamName"
+                  style={{
+                    color: findTeamDetail(
+                      match.match_home_team_id,
+                      "team_first_color"
+                    ),
+                  }}
+                >
+                  {findTeamDetail(match.match_home_team_id, "team_name")}
+                </span>
+                <span className="teamScore">{match.match_home_score}</span>
+                <span className="teamScore">{match.match_away_score}</span>
 
-                  <span
-                    className="teamName"
-                    style={{
-                      color: findTeamDetail(
-                        match.match_away_team_id,
-                        "team_first_color"
-                      ),
-                    }}
-                  >
-                    {findTeamDetail(match.match_away_team_id, "team_name")}
-                  </span>
-                </div>
-                <div className="penaltyInfo">{caclulateResultText(match)}</div>
+                <span
+                  className="teamName"
+                  style={{
+                    color: findTeamDetail(
+                      match.match_away_team_id,
+                      "team_first_color"
+                    ),
+                  }}
+                >
+                  {findTeamDetail(match.match_away_team_id, "team_name")}
+                </span>
               </div>
-            </Link>
-          );
-        })}
-      </div>
-    </Router>
+              <div className="penaltyInfo">{caclulateResultText(match)}</div>
+            </div>
+          </Link>
+        );
+      })}
+    </div>
   );
 }

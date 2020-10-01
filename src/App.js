@@ -1,5 +1,5 @@
 import React from "react";
-import { HashRouter, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import ScoreList from "./components/ScoreList";
 import MatchReport from "./components/MatchReport";
@@ -7,14 +7,14 @@ import MatchReport from "./components/MatchReport";
 function App() {
   return (
     <div className="App">
-      <HashRouter>
+      <Router>
         <Route exact path="/games">
           <ScoreList />
         </Route>
         <Route path="/games/:id">
           <MatchReport />
         </Route>
-      </HashRouter>
+      </Router>
     </div>
   );
 }

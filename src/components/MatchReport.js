@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router";
 
-import MatchData from "../data/match-data.json";
+import StatData from "../data/stat-data.json";
 
 export default function MatchReport() {
   const { id } = useParams();
