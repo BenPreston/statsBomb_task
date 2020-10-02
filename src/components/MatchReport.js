@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useParams } from "react-router";
 import { Table, Container } from "react-bootstrap";
-import Select from "react-select";
 
 import StatData from "../data/stat-data.json";
 import MatchDataJSON from "../data/match-data.json";
@@ -13,20 +12,6 @@ import "./matchReport.css";
 
 export default function MatchReport() {
   const { id } = useParams();
-
-  // const [playerData, setPlayerData] = useState([
-  //   { stat: "XG", value: "-", teamPerc: "-", gamePerc: "-" },
-  //   { stat: "Shots", value: "-", teamPerc: "-", gamePerc: "-" },
-  //   // { stat: "Goals", value: "-", teamPerc: "-", gamePerc: "-" },
-  //   // { stat: "Tackles", value: "-", teamPerc: "-", gamePerc: "-" },
-  //   // { stat: "Interceptions", value: "-", teamPerc: "-", gamePerc: "-" },
-  //   // { stat: "Pressures", value: "-", teamPerc: "-", gamePerc: "-" },
-  //   // { stat: "Passes", value: "-", teamPerc: "-", gamePerc: "-" },
-  //   // { stat: "Completed Passes", value: "-", teamPerc: "-", gamePerc: "-" },
-  //   // { stat: "Left Foot Passes", value: "-", teamPerc: "-", gamePerc: "-" },
-  //   // { stat: "Right Foot Passes", value: "-", teamPerc: "-", gamePerc: "-" },
-  //   // { stat: "Player Shots Faced", value: "-", teamPerc: "-", gamePerc: "-" },
-  // ]);
 
   const [playerData, setPlayerData] = useState({
     completed_passes: 28,
@@ -97,8 +82,6 @@ export default function MatchReport() {
 
   identfityTeamNames();
 
-  const [homePlayers, setHomePlayers] = useState([]);
-
   function changeStats(player) {
     setPlayerData(player);
   }
@@ -109,16 +92,28 @@ export default function MatchReport() {
         <h1>
           {homeTeam} vs {awayTeam}
         </h1>
+        <h3></h3>
         <div className="playerHolders">
           {matchData.map((data) => {
             return (
               <div className="player" onClick={() => changeStats(data)}>
-                {data.player_name}
+                {PlayerData.map((player) => {
+                  if (player.player_name == data.player_name) {
+                    return (
+                      <div className="player">
+                        <div className="player_name">{player.player_name}</div>
+                        <div className="player_dob">
+                          {player.player_birth_date}
+                        </div>
+                        <div className="player_country">
+                          {player.country_name}
+                        </div>
+                      </div>
+                    );
+                  }
+                })}
               </div>
             );
-            {
-              console.log("Player: ", playerData);
-            }
           })}
         </div>
 
@@ -137,10 +132,6 @@ export default function MatchReport() {
             </tr>
           </thead>
           <tbody>
-            {/* {Object.keys(playerData).map((key) => {
-              return <tr>{key}</tr>;
-            })} */}
-
             {Object.keys(playerData).map(function (keyName, keyIndex) {
               return (
                 <tr>
@@ -152,7 +143,6 @@ export default function MatchReport() {
           </tbody>
         </Table>
       </Container>
-      {console.log(matchData)}
     </div>
   );
 }

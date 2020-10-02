@@ -1,68 +1,61 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Technical Test for Statsbomb Web Developers
 
-## Available Scripts
+use npm to start
 
-In the project directory, you can run:
+For this task I thought that ideally there would be a home page that contained mini data on scores and player statistics.
 
-### `npm start`
+As I knew this was too ambitious in the time frame I went straight to the the matches. Which can be found at route
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+http://localhost:3000/games
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Here I mapped through every game to get the scores. I used the team colors to name the team names, which is not the most attractive solution and not one I would stick with. I had planned to do something slightly more interesting like gradiented background but I didn't have time. However I'd wanted to pull through and use the variable just to ensure it was working ok.
 
-### `npm test`
+As some games went to penalites I created a div to show this score if it was available and make sure it stayed blank if not.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+I had planned to order these games logically and have selectors for a given team but I didn't get to this point.
 
-### `npm run build`
+Over time I would have a nav bar to direct me to different stats places too.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+http://localhost:3000/games/:gameID
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+I created routes for each game. I had planned to create a team line up or cards for each player but on using the data I realised that actually you hadn't included all 22 players plus subs so it didn't seem worth while.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+I would have wanted to do something a bit more interesting though. With a bit more time I would have made these styled cards. I could have even just used materialize or bootstrap.
 
-### `npm run eject`
+The idea for the data was that I could first produce all of the data and then through calculations have worked out how a given player did in the game. Then
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Ultimately I was going to use this not only to display some of this info using D3 or a materialize dashboard, possibly even an SVG to demonstrate the data.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+What I really wanted to do with the percentage was to be able to dynamically score the players and even create match reports for them. This
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+I would have done a series of if lookups so for instance if xg was much higher than goals you would say they were very poor in front of goal. If a player was responsible for over X% of all completed passes you would say the game flowed through them and so on.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+I would also have cleaned up the data as clearly things like player_id look ugly and in some cases (like that one) unnecessary.
 
-## Learn More
+# Questions
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. Why did you choose the frameworks or libraries that you did?
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+I chose React as I've worked with it before. I used a little bit of Bootstrap and I was going to use that d3 and Materialize to create proper styling.
 
-### Code Splitting
+2. What would you have done differently given infinite time?
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+I started by making a server but realised this was not really required as part of the project. However I would with infinite time.
 
-### Analyzing the Bundle Size
+I would also create a global state management with say Redux. This
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+I would anticipate having full lines ups as well as images of the players and build a card based system to view them better.
 
-### Making a Progressive Web App
+I would also aggregate all of the data for team and game percentage as explained above. This would lead on to graphs below as well as autogenerated match reports
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+3. What issues would you foresee with putting this application live as it is?
 
-### Advanced Configuration
+Obviously the data is incomplete. I haven't written any test and it looks quite ugly. It's also not complete so couldn't really be considered a MVP.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+4. If this application was being built for one of our data-scientists, what are some of the questions you would you like to ask them to help you work out how to extend/improve the functionality of this app beyond its current functionality?
 
-### Deployment
+Not starting with a prototpye of what I was actually trying to build has definitely made this a more complicated and less useful project than it might have been.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+So I would start with what is it we want to see. For example I could have chosen to create data on a given footballer by collating say all of Danny Roses statistics. I could have also looked for patterns in this data too. I could
 
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+So my questioning would be focused on why we want to see differne elements and therefore where that data should be, how prominent. where on the page and so on.

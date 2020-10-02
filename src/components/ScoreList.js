@@ -24,7 +24,6 @@ export default function ScoreList() {
   };
 
   return (
-    // <Router>
     <div className="matches">
       {matchData.map((match) => {
         return (

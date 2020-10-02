@@ -1,3 +1,11 @@
 .dataTable {
   max-width: 300px;
 }
+
+.playerHolders {
+  display: flex;
+}
+.player {
+  padding: 5px;
+  border: 1px solid black;
+}
