@@ -14,19 +14,39 @@ import "./matchReport.css";
 export default function MatchReport() {
   const { id } = useParams();
 
-  const [playerData, setPlayerData] = useState([
-    { stat: "XG", value: "-", teamPerc: "-", gamePerc: "-" },
-    { stat: "Shots", value: "-", teamPerc: "-", gamePerc: "-" },
-    { stat: "Goals", value: "-", teamPerc: "-", gamePerc: "-" },
-    { stat: "Tackles", value: "-", teamPerc: "-", gamePerc: "-" },
-    { stat: "Interceptions", value: "-", teamPerc: "-", gamePerc: "-" },
-    { stat: "Pressures", value: "-", teamPerc: "-", gamePerc: "-" },
-    { stat: "Passes", value: "-", teamPerc: "-", gamePerc: "-" },
-    { stat: "Completed Passes", value: "-", teamPerc: "-", gamePerc: "-" },
-    { stat: "Left Foot Passes", value: "-", teamPerc: "-", gamePerc: "-" },
-    { stat: "Right Foot Passes", value: "-", teamPerc: "-", gamePerc: "-" },
-    { stat: "Player Shots Faced", value: "-", teamPerc: "-", gamePerc: "-" },
-  ]);
+  // const [playerData, setPlayerData] = useState([
+  //   { stat: "XG", value: "-", teamPerc: "-", gamePerc: "-" },
+  //   { stat: "Shots", value: "-", teamPerc: "-", gamePerc: "-" },
+  //   // { stat: "Goals", value: "-", teamPerc: "-", gamePerc: "-" },
+  //   // { stat: "Tackles", value: "-", teamPerc: "-", gamePerc: "-" },
+  //   // { stat: "Interceptions", value: "-", teamPerc: "-", gamePerc: "-" },
+  //   // { stat: "Pressures", value: "-", teamPerc: "-", gamePerc: "-" },
+  //   // { stat: "Passes", value: "-", teamPerc: "-", gamePerc: "-" },
+  //   // { stat: "Completed Passes", value: "-", teamPerc: "-", gamePerc: "-" },
+  //   // { stat: "Left Foot Passes", value: "-", teamPerc: "-", gamePerc: "-" },
+  //   // { stat: "Right Foot Passes", value: "-", teamPerc: "-", gamePerc: "-" },
+  //   // { stat: "Player Shots Faced", value: "-", teamPerc: "-", gamePerc: "-" },
+  // ]);
+
+  const [playerData, setPlayerData] = useState({
+    completed_passes: 28,
+    goals: 1,
+    interceptions: 0,
+    left_foot_passes: 22,
+    match_id: 7175982,
+    minutes_played: 97.63,
+    passes: 34,
+    player_id: 15970,
+    player_name: "Samuel Yves Umtiti",
+    player_shots_faced: 0,
+    pressures: 4,
+    right_foot_passes: 4,
+    shots: 1,
+    tackles: 0,
+    team_id: 468227,
+    team_possession_percentage: 0.37,
+    xg: 0.22,
+  });
 
   const matchData = [];
 
@@ -44,11 +64,6 @@ export default function MatchReport() {
       if (id == data.match_id) {
         const newData = { ...data };
         newData["player_name"] = findPlayerName(data.player_id);
-        // Take the player id from this data value
-        // Look it up from the player data json
-        // Find the name of the
-        // Add this name property as a new key value pair to the newData object
-        // Push the new data to matchData
         matchData.push(newData);
       }
     });
@@ -82,17 +97,11 @@ export default function MatchReport() {
 
   identfityTeamNames();
 
-  const Countries = [
-    { label: "Albania", value: 355 },
-    { label: "Argentina", value: 54 },
-    { label: "Austria", value: 43 },
-    { label: "Cocos Islands", value: 61 },
-    { label: "Kuwait", value: 965 },
-    { label: "Sweden", value: 46 },
-    { label: "Venezuela", value: 58 },
-  ];
-
   const [homePlayers, setHomePlayers] = useState([]);
+
+  function changeStats(player) {
+    setPlayerData(player);
+  }
 
   return (
     <div className="data">
@@ -100,12 +109,23 @@ export default function MatchReport() {
         <h1>
           {homeTeam} vs {awayTeam}
         </h1>
+        <div className="playerHolders">
+          {matchData.map((data) => {
+            return (
+              <div className="player" onClick={() => changeStats(data)}>
+                {data.player_name}
+              </div>
+            );
+            {
+              console.log("Player: ", playerData);
+            }
+          })}
+        </div>
+
         <Table striped bordered hover className="dataTable">
           <thead>
             <tr>
-              <th colSpan="4">
-                <Select options={Countries} />
-              </th>
+              <th colSpan="4"></th>
             </tr>
           </thead>
           <thead>
@@ -117,13 +137,15 @@ export default function MatchReport() {
             </tr>
           </thead>
           <tbody>
-            {playerData.map((stat) => {
+            {/* {Object.keys(playerData).map((key) => {
+              return <tr>{key}</tr>;
+            })} */}
+
+            {Object.keys(playerData).map(function (keyName, keyIndex) {
               return (
                 <tr>
-                  <td>{stat.stat}</td>
-                  <td>{stat.value}</td>
-                  <td>{stat.teamPerc}</td>
-                  <td>{stat.gamePerc}</td>
+                  <td>{keyName}</td>
+                  <td>{playerData[keyName]}</td>
                 </tr>
               );
             })}
