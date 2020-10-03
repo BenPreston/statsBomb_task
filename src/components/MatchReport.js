@@ -66,7 +66,7 @@ export default function MatchReport() {
     return player[0].player_name;
   };
 
-  const calculateTeamData = () => {
+  const calculateMatchData = () => {
     StatData.map((data) => {
       if (id == data.match_id) {
         const newData = { ...data };
@@ -76,7 +76,7 @@ export default function MatchReport() {
     });
   };
 
-  calculateTeamData();
+  calculateMatchData();
 
   let homeTeam, homeTeamID, homeTeamColor, awayTeam, awayTeamID, awayTeamColor;
 
@@ -105,6 +105,57 @@ export default function MatchReport() {
   };
 
   identfityTeamNames();
+
+  const calculateTeamData = (homeOrAwayTeam) => {
+    let teamID,
+      teamName,
+      teamData = {
+        xg: 0,
+        shots: 0,
+        goals: 0,
+        tackles: 0,
+        interceptions: 0,
+        pressures: 0,
+        passes: 0,
+        completed_passes: 0,
+        left_foot_passes: 0,
+        right_foot_passes: 0,
+        player_shots_faced: 0,
+      };
+
+    if (homeOrAwayTeam == "home") {
+      teamID = homeTeamID;
+      teamName = homeTeam;
+    }
+
+    if (homeOrAwayTeam == "away") {
+      teamID = awayTeamID;
+      teamName = awayTeam;
+    }
+
+    matchData.filter((data) => {
+      if (data.team_id == teamID) {
+        teamData.xg += data.xg;
+        teamData.shots += data.shots;
+        teamData.goals += data.goals;
+        teamData.tackles += data.tackles;
+        teamData.interceptions += data.interceptions;
+        teamData.pressures += data.pressures;
+        teamData.passes += data.passes;
+        teamData.completed_passes += data.completed_passes;
+        teamData.left_foot_passes += data.left_foot_passes;
+        teamData.right_foot_passes += data.right_foot_passes;
+        teamData.player_shots_faced += data.player_shots_faced;
+      }
+    });
+
+    teamData.xg = teamData.xg.toFixed(2);
+
+    return teamData;
+  };
+
+  const homeTeamData = calculateTeamData("home");
+  const awayTeamData = calculateTeamData("away");
 
   function changeStats(player) {
     setPlayerData(player);
@@ -141,6 +192,7 @@ export default function MatchReport() {
 
   return (
     <Body>
+      {console.log(homeTeamID, homeTeamData)}
       <div className="data">
         <Container>
           <h1>
@@ -166,15 +218,30 @@ export default function MatchReport() {
             Here you can find detail of all relevant attacking stats from the
             game
           </p>
-          {/* Stat slider */}
+          {/* Home Stat slider */}
           <Slider {...statsCardSettings}>
-            {Object.keys(attackingData).map(function (keyName, keyIndex) {
+            {Object.keys(homeTeamData).map(function (keyName, keyIndex) {
               return (
-                <StatCard statVal={attackingData[keyName]} statName={keyName} />
+                <StatCard statVal={homeTeamData[keyName]} statName={keyName} />
               );
             })}
           </Slider>
-          {/* Stat Slider ends here  */}
+          {/* Home Stat Slider ends here  */}
+
+          {/* Away Stat slider */}
+          <h2>{awayTeam}</h2>
+          <p>
+            Here you can find detail of all relevant attacking stats from the
+            game
+          </p>
+          <Slider {...statsCardSettings}>
+            {Object.keys(awayTeamData).map(function (keyName, keyIndex) {
+              return (
+                <StatCard statVal={awayTeamData[keyName]} statName={keyName} />
+              );
+            })}
+          </Slider>
+          {/* Away Stat Slider ends here  */}
 
           <Table striped bordered hover className="dataTable">
             <thead>
