@@ -1,0 +1,30 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,400i,700");
+body {
+  font-size: 16px;
+  /* color: #404040; */
+  font-family: Montserrat, sans-serif;
+  /* background-image: linear-gradient(to bottom right, #ff0000 50%, #0039a6 50%); */
+  background-position: center;
+  background-attachment: fixed;
+  margin: 0;
+  padding: 2rem 0;
+  display: grid;
+  box-sizing: border-box;
+}
+
+.stat_card {
+  background-color: #fff;
+  max-width: 100px;
+  min-height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 2rem;
+  box-shadow: 0px 1rem 1.5rem rgba(0, 0, 0, 0.5);
+}
+
+.stat_score {
+  font-size: 2.5rem;
+}

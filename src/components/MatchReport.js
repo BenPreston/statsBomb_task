@@ -1,11 +1,21 @@
 import React, { useState } from "react";
 import { useParams } from "react-router";
-import { Table, Container } from "react-bootstrap";
+import { Table, Container } from "reactstrap";
 
 import StatData from "../data/stat-data.json";
 import MatchDataJSON from "../data/match-data.json";
 import TeamData from "../data/team-data.json";
 import PlayerData from "../data/player-data.json";
+
+import PlayerCard from "./PlayerCard";
+import StatCard from "./StatCard";
+
+import Slider from "react-slick";
+import styled from "styled-components";
+
+// Import css files
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./matchReport.css";
@@ -33,6 +43,18 @@ export default function MatchReport() {
     xg: 0.22,
   });
 
+  const [attackingData, setAttackingData] = useState({
+    goals: 1,
+    xg: 0.5,
+    shots: 3,
+    stuff1: 1,
+    stuff2: 0.5,
+    stuff3: 3,
+    stuff4: 1,
+    xstuff15: 0.5,
+    stuff16: 3,
+  });
+
   const matchData = [];
 
   const findPlayerName = (player_id) => {
@@ -56,7 +78,7 @@ export default function MatchReport() {
 
   calculateTeamData();
 
-  let homeTeam, homeTeamID, awayTeam, awayTeamID;
+  let homeTeam, homeTeamID, homeTeamColor, awayTeam, awayTeamID, awayTeamColor;
 
   const identfityTeamIDs = () => {
     MatchDataJSON.map((match) => {
@@ -73,9 +95,11 @@ export default function MatchReport() {
     TeamData.filter((team) => {
       if (team.team_id === homeTeamID) {
         homeTeam = team.team_name;
+        homeTeamColor = team.team_first_color;
       }
       if (team.team_id === awayTeamID) {
         awayTeam = team.team_name;
+        awayTeamColor = team.team_first_color;
       }
     });
   };
@@ -86,63 +110,99 @@ export default function MatchReport() {
     setPlayerData(player);
   }
 
-  return (
-    <div className="data">
-      <Container>
-        <h1>
-          {homeTeam} vs {awayTeam}
-        </h1>
-        <h3></h3>
-        <div className="playerHolders">
-          {matchData.map((data) => {
-            return (
-              <div className="player" onClick={() => changeStats(data)}>
-                {PlayerData.map((player) => {
-                  if (player.player_name == data.player_name) {
-                    return (
-                      <div className="player">
-                        <div className="player_name">{player.player_name}</div>
-                        <div className="player_dob">
-                          {player.player_birth_date}
-                        </div>
-                        <div className="player_country">
-                          {player.country_name}
-                        </div>
-                      </div>
-                    );
-                  }
-                })}
-              </div>
-            );
-          })}
-        </div>
+  const playerCardConfig = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+  };
 
-        <Table striped bordered hover className="dataTable">
-          <thead>
-            <tr>
-              <th colSpan="4"></th>
-            </tr>
-          </thead>
-          <thead>
-            <tr>
-              <th>Stat</th>
-              <th>Value</th>
-              <th>Team Percentage</th>
-              <th>Game Percentage</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Object.keys(playerData).map(function (keyName, keyIndex) {
+  const [playerCardSettings, setPlayerCardSettings] = useState(
+    playerCardConfig
+  );
+
+  const statsCardConfig = {
+    infinite: true,
+    speed: 500,
+    slidesToShow: 6,
+    slidesToScroll: 3,
+  };
+
+  const [statsCardSettings, setStatsCardSettings] = useState(statsCardConfig);
+
+  const Body = styled.body`
+    background-image: linear-gradient(
+      to bottom right,
+      ${homeTeamColor} 50%,
+      ${awayTeamColor} 50%
+    );
+  `;
+
+  return (
+    <Body>
+      <div className="data">
+        <Container>
+          <h1>
+            {homeTeam} vs {awayTeam}
+          </h1>
+          {/* Player slider */}
+          <Slider {...playerCardSettings}>
+            {matchData.map((data) => {
               return (
-                <tr>
-                  <td>{keyName}</td>
-                  <td>{playerData[keyName]}</td>
-                </tr>
+                <div className="player" onClick={() => changeStats(data)}>
+                  {PlayerData.map((player) => {
+                    if (player.player_name == data.player_name) {
+                      return <PlayerCard player={player} />;
+                    }
+                  })}
+                </div>
               );
             })}
-          </tbody>
-        </Table>
-      </Container>
-    </div>
+          </Slider>
+          {/* Player slider ends */}
+          <h2>{homeTeam}</h2>
+          <p>
+            Here you can find detail of all relevant attacking stats from the
+            game
+          </p>
+          {/* Stat slider */}
+          <Slider {...statsCardSettings}>
+            {Object.keys(attackingData).map(function (keyName, keyIndex) {
+              return (
+                <StatCard statVal={attackingData[keyName]} statName={keyName} />
+              );
+            })}
+          </Slider>
+          {/* Stat Slider ends here  */}
+
+          <Table striped bordered hover className="dataTable">
+            <thead>
+              <tr>
+                <th colSpan="4"></th>
+              </tr>
+            </thead>
+            <thead>
+              <tr>
+                <th>Stat</th>
+                <th>Value</th>
+                <th>Team Percentage</th>
+                <th>Game Percentage</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.keys(playerData).map(function (keyName, keyIndex) {
+                return (
+                  <tr>
+                    <td>{keyName}</td>
+                    <td>{playerData[keyName]}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table>
+        </Container>
+      </div>
+    </Body>
   );
 }
