@@ -8,7 +8,7 @@ import TeamData from "../data/team-data.json";
 import PlayerData from "../data/player-data.json";
 
 import PlayerCard from "./PlayerCard";
-import StatCard from "./StatCard";
+import StatSlider from "./StatSlider";
 
 import Slider from "react-slick";
 import styled from "styled-components";
@@ -173,15 +173,6 @@ export default function MatchReport() {
     playerCardConfig
   );
 
-  const statsCardConfig = {
-    infinite: true,
-    speed: 500,
-    slidesToShow: 6,
-    slidesToScroll: 3,
-  };
-
-  const [statsCardSettings, setStatsCardSettings] = useState(statsCardConfig);
-
   const Body = styled.body`
     background-image: linear-gradient(
       to bottom right,
@@ -213,35 +204,9 @@ export default function MatchReport() {
             })}
           </Slider>
           {/* Player slider ends */}
-          <h2>{homeTeam}</h2>
-          <p>
-            Here you can find detail of all relevant attacking stats from the
-            game
-          </p>
-          {/* Home Stat slider */}
-          <Slider {...statsCardSettings}>
-            {Object.keys(homeTeamData).map(function (keyName, keyIndex) {
-              return (
-                <StatCard statVal={homeTeamData[keyName]} statName={keyName} />
-              );
-            })}
-          </Slider>
-          {/* Home Stat Slider ends here  */}
 
-          {/* Away Stat slider */}
-          <h2>{awayTeam}</h2>
-          <p>
-            Here you can find detail of all relevant attacking stats from the
-            game
-          </p>
-          <Slider {...statsCardSettings}>
-            {Object.keys(awayTeamData).map(function (keyName, keyIndex) {
-              return (
-                <StatCard statVal={awayTeamData[keyName]} statName={keyName} />
-              );
-            })}
-          </Slider>
-          {/* Away Stat Slider ends here  */}
+          <StatSlider teamName={homeTeam} teamData={homeTeamData} />
+          <StatSlider teamName={awayTeam} teamData={awayTeamData} />
 
           <Table striped bordered hover className="dataTable">
             <thead>
