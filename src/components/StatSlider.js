@@ -8,7 +8,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-export default function StatSlider({ teamName, teamData }) {
+export default function StatSlider({ teamOrPlayerName, dataToMap }) {
   const statsCardConfig = {
     infinite: true,
     speed: 500,
@@ -20,11 +20,18 @@ export default function StatSlider({ teamName, teamData }) {
 
   return (
     <div className="StatSlider">
-      <h2>{teamName}</h2>
-      <p>Breakdown of all detail for {teamName}</p>
+      <h2>{teamOrPlayerName}</h2>
+      <p>Breakdown of all detail for {teamOrPlayerName}</p>
       <Slider {...statsCardSettings}>
-        {Object.keys(teamData).map(function (keyName, keyIndex) {
-          return <StatCard statVal={teamData[keyName]} statName={keyName} />;
+        {Object.keys(dataToMap).map(function (keyName, keyIndex) {
+          if (
+            keyName !== "match_id" &&
+            keyName !== "team_id" &&
+            keyName !== "player_id" &&
+            keyName !== "player_name"
+          ) {
+            return <StatCard statVal={dataToMap[keyName]} statName={keyName} />;
+          }
         })}
       </Slider>
     </div>

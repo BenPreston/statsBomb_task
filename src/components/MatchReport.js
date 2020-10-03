@@ -205,34 +205,12 @@ export default function MatchReport() {
           </Slider>
           {/* Player slider ends */}
 
-          <StatSlider teamName={homeTeam} teamData={homeTeamData} />
-          <StatSlider teamName={awayTeam} teamData={awayTeamData} />
-
-          <Table striped bordered hover className="dataTable">
-            <thead>
-              <tr>
-                <th colSpan="4"></th>
-              </tr>
-            </thead>
-            <thead>
-              <tr>
-                <th>Stat</th>
-                <th>Value</th>
-                <th>Team Percentage</th>
-                <th>Game Percentage</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Object.keys(playerData).map(function (keyName, keyIndex) {
-                return (
-                  <tr>
-                    <td>{keyName}</td>
-                    <td>{playerData[keyName]}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </Table>
+          <StatSlider
+            teamOrPlayerName={playerData.player_name}
+            dataToMap={playerData}
+          />
+          <StatSlider teamOrPlayerName={homeTeam} dataToMap={homeTeamData} />
+          <StatSlider teamOrPlayerName={awayTeam} dataToMap={awayTeamData} />
         </Container>
       </div>
     </Body>
