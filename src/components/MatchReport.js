@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { useParams } from "react-router";
-import { Table, Container } from "reactstrap";
+import { Container } from "reactstrap";
 
 import StatData from "../data/stat-data.json";
 import MatchDataJSON from "../data/match-data.json";
 import TeamData from "../data/team-data.json";
 import PlayerData from "../data/player-data.json";
 
-import PlayerCard from "./PlayerCard";
 import StatSlider from "./StatSlider";
+import ScatterChartWidget from "./ScatterChartWidget";
+import PlayerSlider from "./PlayerSlider";
 
-import Slider from "react-slick";
 import styled from "styled-components";
 
 // Import css files
@@ -41,18 +41,6 @@ export default function MatchReport() {
     team_id: 468227,
     team_possession_percentage: 0.37,
     xg: 0.22,
-  });
-
-  const [attackingData, setAttackingData] = useState({
-    goals: 1,
-    xg: 0.5,
-    shots: 3,
-    stuff1: 1,
-    stuff2: 0.5,
-    stuff3: 3,
-    stuff4: 1,
-    xstuff15: 0.5,
-    stuff16: 3,
   });
 
   const matchData = [];
@@ -157,22 +145,6 @@ export default function MatchReport() {
   const homeTeamData = calculateTeamData("home");
   const awayTeamData = calculateTeamData("away");
 
-  function changeStats(player) {
-    setPlayerData(player);
-  }
-
-  const playerCardConfig = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-  };
-
-  const [playerCardSettings, setPlayerCardSettings] = useState(
-    playerCardConfig
-  );
-
   const Body = styled.body`
     background-image: linear-gradient(
       to bottom right,
@@ -181,36 +153,67 @@ export default function MatchReport() {
     );
   `;
 
+  const calcGraphData = (dataArrOfObj, homeOrAwayID, xAxis, yAxis, zAxis) => {
+    const graphData = [];
+
+    dataArrOfObj.map((dataObj) => {
+      const newObj = {};
+
+      if (dataObj.team_id === homeOrAwayID) {
+        newObj.x = 0 + dataObj[xAxis];
+        newObj.y = 0 + dataObj[yAxis];
+        newObj.z = 100 + dataObj[zAxis] * 100;
+
+        graphData.push(newObj);
+      }
+    });
+
+    return graphData;
+  };
+
   return (
     <Body>
-      {console.log(homeTeamID, homeTeamData)}
       <div className="data">
         <Container>
           <h1>
             {homeTeam} vs {awayTeam}
           </h1>
-          {/* Player slider */}
-          <Slider {...playerCardSettings}>
-            {matchData.map((data) => {
-              return (
-                <div className="player" onClick={() => changeStats(data)}>
-                  {PlayerData.map((player) => {
-                    if (player.player_name == data.player_name) {
-                      return <PlayerCard player={player} />;
-                    }
-                  })}
-                </div>
-              );
-            })}
-          </Slider>
-          {/* Player slider ends */}
-
+          <h2>Scatter Graph</h2>
+          <p>
+            This graph demonstrates shots to xg with bigger stars for goals.
+            However it's not quite right and needs review
+          </p>
+          <ScatterChartWidget
+            homeTeamName={homeTeam}
+            homeTeamColor={homeTeamColor}
+            homeTeamDataArr={calcGraphData(
+              matchData,
+              homeTeamID,
+              "xg",
+              "shots",
+              "goals"
+            )}
+            awayTeamName={awayTeam}
+            awayTeamColor={awayTeamColor}
+            awayTeamDataArr={calcGraphData(
+              matchData,
+              awayTeamID,
+              "xg",
+              "shots",
+              "goals"
+            )}
+          />
+          <StatSlider teamOrPlayerName={homeTeam} dataToMap={homeTeamData} />
+          <StatSlider teamOrPlayerName={awayTeam} dataToMap={awayTeamData} />
+          <PlayerSlider
+            matchData={matchData}
+            playerData={playerData}
+            setPlayerData={setPlayerData}
+          />
           <StatSlider
             teamOrPlayerName={playerData.player_name}
             dataToMap={playerData}
           />
-          <StatSlider teamOrPlayerName={homeTeam} dataToMap={homeTeamData} />
-          <StatSlider teamOrPlayerName={awayTeam} dataToMap={awayTeamData} />
         </Container>
       </div>
     </Body>
