@@ -10,6 +10,7 @@ import PlayerData from "../data/player-data.json";
 import StatSlider from "./StatSlider";
 import ScatterChartWidget from "./ScatterChartWidget";
 import PlayerSlider from "./PlayerSlider";
+import Radar from "./RadarChartWidget";
 
 import styled from "styled-components";
 
@@ -178,6 +179,9 @@ export default function MatchReport() {
           <h1>
             {homeTeam} vs {awayTeam}
           </h1>
+
+          <h2>Radar</h2>
+          <Radar homeTeamData={homeTeamData} awayTeamData={awayTeamData} />
           <h2>Scatter Graph</h2>
           <p>
             This graph demonstrates shots to xg with bigger stars for goals.
