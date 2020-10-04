@@ -8,24 +8,35 @@ import {
   PolarRadiusAxis,
 } from "recharts";
 
-export default function RadarChartWidget({ homeTeamData, awayTeamData }) {
+import "./radarChartWidget.css";
+
+export default function RadarChartWidget({
+  homeTeamData,
+  homeTeamName,
+  homeTeamColor,
+  awayTeamData,
+  awayTeamName,
+  awayTeamColor,
+}) {
   const data = [];
 
   Object.keys(homeTeamData).map((key) => {
     let maxScore;
 
-    if (homeTeamData[key] >= awayTeamData[key]) {
-      maxScore = homeTeamData[key];
-    } else {
-      maxScore = awayTeamData[key];
-    }
+    if (!(key.includes("pass") || key.includes("player_shots_faced"))) {
+      if (homeTeamData[key] >= awayTeamData[key]) {
+        maxScore = homeTeamData[key];
+      } else {
+        maxScore = awayTeamData[key];
+      }
 
-    data.push({
-      type: key,
-      home: homeTeamData[key],
-      away: awayTeamData[key],
-      topScore: maxScore,
-    });
+      data.push({
+        type: key,
+        home: (maxScore / homeTeamData[key]) * 100,
+        away: (awayTeamData[key] / maxScore) * 100,
+        topScore: maxScore,
+      });
+    }
   });
 
   return (
@@ -36,22 +47,23 @@ export default function RadarChartWidget({ homeTeamData, awayTeamData }) {
       width={500}
       height={500}
       data={data}
+      fill="#8884d8"
     >
       <PolarGrid />
       <PolarAngleAxis dataKey="type" />
-      <PolarRadiusAxis angle={30} domain={[0, 150]} />
+      <PolarRadiusAxis angle={30} domain={[0, 100]} />
       <Radar
-        name="Mike"
+        name={homeTeamName}
         dataKey="home"
-        stroke="#8884d8"
-        fill="#8884d8"
+        stroke={homeTeamColor}
+        fill={homeTeamColor}
         fillOpacity={0.6}
       />
       <Radar
-        name="Lily"
+        name={awayTeamName}
         dataKey="away"
-        stroke="#82ca9d"
-        fill="#82ca9d"
+        stroke={awayTeamColor}
+        fill={awayTeamColor}
         fillOpacity={0.6}
       />
       <Legend />

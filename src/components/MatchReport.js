@@ -11,6 +11,7 @@ import StatSlider from "./StatSlider";
 import ScatterChartWidget from "./ScatterChartWidget";
 import PlayerSlider from "./PlayerSlider";
 import Radar from "./RadarChartWidget";
+import StackedBarChartWidget from "./StackedBarChartWidget";
 
 import styled from "styled-components";
 
@@ -179,36 +180,67 @@ export default function MatchReport() {
           <h1>
             {homeTeam} vs {awayTeam}
           </h1>
-
-          <h2>Radar</h2>
-          <Radar homeTeamData={homeTeamData} awayTeamData={awayTeamData} />
-          <h2>Scatter Graph</h2>
-          <p>
-            This graph demonstrates shots to xg with bigger stars for goals.
-            However it's not quite right and needs review
-          </p>
-          <ScatterChartWidget
-            homeTeamName={homeTeam}
-            homeTeamColor={homeTeamColor}
-            homeTeamDataArr={calcGraphData(
-              matchData,
-              homeTeamID,
-              "xg",
-              "shots",
-              "goals"
-            )}
-            awayTeamName={awayTeam}
-            awayTeamColor={awayTeamColor}
-            awayTeamDataArr={calcGraphData(
-              matchData,
-              awayTeamID,
-              "xg",
-              "shots",
-              "goals"
-            )}
-          />
           <StatSlider teamOrPlayerName={homeTeam} dataToMap={homeTeamData} />
           <StatSlider teamOrPlayerName={awayTeam} dataToMap={awayTeamData} />
+          <h2>Game Data</h2>
+
+          <div className="graph_container">
+            <div className="graph">
+              <h3>Passing Chart</h3>
+              <p>
+                Cross match passing data. I have decided to combine the home and
+                away team to show differences between the two
+              </p>
+              <StackedBarChartWidget matchData={matchData} />
+            </div>
+          </div>
+
+          <div className="graph_container">
+            <div className="graph">
+              <h3>Game Radar</h3>
+              <p>
+                This is a team comparrison radar. If I have time I need to fix
+                the scale as I've just done a 100% on 1 150% mark rather than
+                giving data.
+              </p>
+              <Radar
+                homeTeamData={homeTeamData}
+                homeTeamName={homeTeam}
+                homeTeamColor={homeTeamColor}
+                awayTeamData={awayTeamData}
+                awayTeamName={awayTeam}
+                awayTeamColor={awayTeamColor}
+              />
+            </div>
+            <div className="graph">
+              <h3>Scatter Graph</h3>
+              <p>
+                This graph demonstrates shots to xg with bigger stars for goals.
+                However it's not quite right and needs review
+              </p>
+              <ScatterChartWidget
+                homeTeamName={homeTeam}
+                homeTeamColor={homeTeamColor}
+                homeTeamDataArr={calcGraphData(
+                  matchData,
+                  homeTeamID,
+                  "xg",
+                  "shots",
+                  "goals"
+                )}
+                awayTeamName={awayTeam}
+                awayTeamColor={awayTeamColor}
+                awayTeamDataArr={calcGraphData(
+                  matchData,
+                  awayTeamID,
+                  "xg",
+                  "shots",
+                  "goals"
+                )}
+              />
+            </div>
+          </div>
+          <h1>Player Data</h1>
           <PlayerSlider
             matchData={matchData}
             playerData={playerData}

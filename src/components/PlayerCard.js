@@ -6,10 +6,10 @@ export default function PlayerCard({ player }) {
     <div>
       <div className="card">
         <h2 className="name">{player.player_name}</h2>
-        <div className="title">Position</div>
+        <div className="title">{player.country_name}</div>
         <div className="actions">
           <div className="match-rating">
-            <span className="match-rating_score">6</span>
+            <span className="match-rating_score">-</span>
             <small>Match Rating</small>
           </div>
           <div className="follow-btn">

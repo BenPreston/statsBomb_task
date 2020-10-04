@@ -20,8 +20,8 @@ export default function StatSlider({ teamOrPlayerName, dataToMap }) {
 
   return (
     <div className="StatSlider">
-      <h2>{teamOrPlayerName}</h2>
-      <p>Breakdown of all detail for {teamOrPlayerName}</p>
+      <h2>{teamOrPlayerName}: Match Statistics</h2>
+      <p>Key numeric metrics for {teamOrPlayerName}</p>
       <Slider {...statsCardSettings}>
         {Object.keys(dataToMap).map(function (keyName, keyIndex) {
           if (
